@@ -1,5 +1,6 @@
 import styles from "./Sidebar.module.css";
 import { GithubLogo } from "phosphor-react";
+import { Avatar } from "./Avatar";
 
 export function Sidebar() {
   return (
@@ -10,7 +11,7 @@ export function Sidebar() {
       />
 
       <div className={styles.profile}>
-        <img className={styles.avatar} src="src\assets\sum117-bae.png" />
+        <Avatar src="src\assets\sum117-bae.png"/>
         <strong>João Caliman</strong>
         <span>Web Developer</span>
       </div>

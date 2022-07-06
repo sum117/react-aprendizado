@@ -1,51 +1,71 @@
 import styles from "./Post.module.css";
-const postedAt = () => {
-  const date = Date.now();
-  const dateObj = new Date(date);
-  const timeSince = date - dateObj.getTime();
-  const localeString = dateObj.toLocaleDateString();
-  return {
-    rawDateObj: dateObj,
-    timeSince: timeSince,
-    localeDateString: localeString,
-  };
-};
-export function Post() {
+import { Comment } from "./Comment";
+import { Avatar } from "./Avatar";
+import { formatDate } from "../main";
+import { useState } from "react";
+
+export function Post({author, publishedAt, content}) {
+
+  const [comments, setComments] = useState([]);
+
+  const [newCommentText, setNewCommentText] = useState('');
+
+  const date = formatDate(publishedAt);
+  
   return (
     <article className={styles.post}>
       <header>
         <div className={styles.author}>
-          <img className={styles.avatar} src="src\assets\sum117-bae.png" />
+          <Avatar src={author.avatarUrl} />
           <div className={styles.authorInfo}>
-            <strong>João Caliman</strong>
-            <span>Web Developer</span>
+            <strong>{author.name}</strong>
+            <span>{author.role}</span>
           </div>
         </div>
 
         <time
-          title={postedAt().localeDateString}
-          dateTime={postedAt().rawDateObj}
+          title={date.raw}
+          dateTime={date.iso}
         >
-          Publicado há {postedAt().timeSince} milisegundos
+          {date.relative}
         </time>
       </header>
 
       <div className={styles.content}>
-        <p>Fala pessoal, tudo bem?!</p>
-        <p>Bem vindo ao meu portfolio!</p>
-        <p>
-          ➡️ <a href="">Você pode acessar as minhas referências aqui!</a>
-        </p>
+        {content.map(line => {
+          if (line.type === 'paragraph') return <p>{line.content}</p>
+          else if (line.type === 'link') return <p><a href="">{line.content}</a></p>;
+
+        })}
       </div>
 
-      <form className={styles.commentForm}>
+      <form onSubmit={handleNewComment} className={styles.commentForm}>
         <strong>Quer me mandar uma mensagem?</strong>
 
-        <textarea placeholder="Deixe seu comentário aqui!" />
+        <textarea 
+          value={newCommentText} 
+          onChange={handleNewCommentChange} 
+          placeholder="Deixe seu comentário aqui!" 
+        />
         <footer>
           <button type="submit">Enviar</button>
         </footer>
       </form>
+      <div className={styles.commentList}>
+        {comments.map((comment) => <Comment content={comment}/>)}
+      </div>
     </article>
   );
+
+  function handleNewComment() {
+    event.preventDefault()
+
+    setComments([...comments, newCommentText]);
+    setNewCommentText('');
+
+  }
+  function handleNewCommentChange() {
+    setNewCommentText(event.target.value)
+  }
+
 }
