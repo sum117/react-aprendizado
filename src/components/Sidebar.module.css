@@ -11,21 +11,18 @@
 }
 
 .sidebar footer a {
-  display: block;
   background: transparent;
   color: var(--green-500);
   border: 1px solid var(--green-500);
   border-radius: 8px;
   height: 50px;
-  padding: 0 1.5rem;
+  padding: 0.2rem;
   text-decoration: none;
   font-size: 0.775rem;
   display: flex;
   align-items: center;
   justify-content: center;
-
-  gap: 0.5rem;
-
+  text-align: center;
   transition: color 0.1s, background-color 0.1s;
 }
 .sidebar footer a:hover {
